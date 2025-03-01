@@ -1,16 +1,27 @@
 #network.py
-from neuron import Neuron
+
 from layer import Layer
-from random import random, randint
+from random import randint
+
 class Network:
     def __init__(self, input_layer, output_layer):
-        self.input_layer=input_layer
-        self.output_layer=output_layer
-        self.hiddenLayers=[]  
-    def create_hiddenlayer(self, num_layers):
-        self.hiddenLayers =  [Layer(randint(10,20)) for _ in range(num_layers)]
+        self.input_layer = input_layer
+        self.output_layer = output_layer
+        self.hidden_layers = []
+
+    def create_hidden_layers(self, num_layers, input_size):
+        """
+        Create hidden layers with random numbers of neurons.
+        """
+        self.hidden_layers = [
+            Layer(randint(10, 20), input_size=input_size) for _ in range(num_layers)
+        ]
+
     def forward(self, inputs):
-        output=self.input_layer.forward(inputs)
-        for layer in self.hiddenLayers:
-            out=layer.forward(out)
-        return self.output_layer.forward(out)
+        """
+        Forward pass through the entire network.
+        """
+        output = self.input_layer.forward(inputs)
+        for layer in self.hidden_layers:
+            output = layer.forward(output)
+        return self.output_layer.forward(output)
